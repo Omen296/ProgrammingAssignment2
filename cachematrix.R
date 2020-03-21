@@ -1,47 +1,31 @@
 ##The function makeCacheMatrix creates a "matrix object" that can be called after with cachesolve. Cachesolve, searches for the cache and 
 ##if it doesnt exist it just solves it and sets the value for future operations
 
-## Creates a list with a matrix and an space for its inverse in cache to be called after
+## Creates a list with different functions that will serve to recall the values from the other enviroment if they exist
 
-makeCacheMatrix <- function(x = matrix()){
-  inv=NULL
-  ##THE PROBLEM STARTS HERE, getdara, setinv and getinv end up being the functions instead of the data proper
-  setdata<-function(y)          {    #Creates a vector that has the data of x and m  
-    x<<-y                            #And sends those values to another enviroment
-    inv<<-NULL
-    }
-  getdata<-function () x                           
-  setinv <- function(solve) inv <<- solve   
-  getinv <- function() inv
-  list(setdata = setdata, getdata = getdata, setinv = setinv,
-       getinv = getinv)  #  We create a list to get them in cacheSolve
-  }
-
-
-## Write a short comment describing this function
+makeCacheMatrix<-function(x=matrix()) {
+  m<-NULL             #sets m as NULL on this enviroment to make it so it can used on the rest of the function
+  get<-function() x   #stores the actual matrix in a way that can be recalled by the next function
+  setsolve<-function(solve) m<<-solve #produces the function that will "receive" the value in the other function
+  getsolve<-function() m  #stores the inverted value to be checked in the next function
+  list(get=get,           #the "matrix"
+       setsolve=setsolve,
+       getsolve=getsolve)
+}
 
 cacheSolve <- function(x, ...) {
-  inv<-x$getinv #Gets the value of inv if it exists
-    if(!is.null(inv)){
-      message("Getting inverse matrix from cache") #And tells you so
-      return(inv)
-    }
-    inv<-solve(x$getdata) #Produce the inverse and set it as a cached value
-    x$getinv(inv) #Sets inv in the matrix
-    inv #Prints the value
+  m<-x$getsolve()   #gets the value of m
+  if(!is.null(m)) {   #and if there is a prior solution, it tells you so
+    message("Retrieving inverse matrix from cache")  #The message
+    m #It returns the value of m from cache
   }
-
-
-
-d<-c(2,3)
-e<-c(4,3)
-z<-data.frame(d, e)
-solve(z)
-D<-makeCacheMatrix(z)
-P<-cacheSolve(D)
-solve(z)==P
-
-
+  else{
+  data<-x$get()   #recovers the data
+  m<-solve(data) #solves m
+  x$setsolve(m) #sets the value for future recallings
+  m #provides the output
+  }
+}
 
 
 
