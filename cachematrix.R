@@ -19,7 +19,7 @@ cacheSolve <- function(x, ...) {
     message("Retrieving inverse matrix from cache")  #The message
     m #It returns the value of m from cache
   }
-  else{
+  else{           #The else is not really necessary but it makes everything clearer   
   data<-x$get()   #recovers the data
   m<-solve(data) #solves m
   x$setsolve(m) #sets the value for future recallings
