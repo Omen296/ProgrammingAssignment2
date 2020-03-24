@@ -1,4 +1,4 @@
-##The function makeCacheMatrix creates a "matrix object" that can be called after with cachesolve. Cachesolve, searches for the cache and 
+##The function makeCacheMatrix creates a list that will act as a"matrix object" that can be called after with cachesolve. Cachesolve, searches for the cache and 
 ##if it doesnt exist it just solves it and sets the value for future operations
 
 ## Creates a list with different functions that will serve to recall the values from the other enviroment if they exist
